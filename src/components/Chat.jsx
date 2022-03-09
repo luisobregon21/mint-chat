@@ -29,7 +29,7 @@ function Chat() {
             const FetchedPosts = async () => {
                 const querySnapshot = await getDocs(
                     collection(db, 'messages'),
-                    orderBy('createdAt', 'desc'),
+                    orderBy('createdAt'),
                     limit(50)
                 )
                 querySnapshot.forEach((doc) => {
@@ -46,26 +46,24 @@ function Chat() {
     return (
         <div>
             <SignOut />
-            <React.StrictMode>
-                <div className="msg">
-                    {messages.map((person, id) => (
-                        <div>
-                            <div
-                                key={id}
-                                className={`msg ${
-                                    person.uid === auth.currentUser.uid
-                                        ? 'sent'
-                                        : 'received'
-                                }`}
-                            >
-                                {/* image and paragraph text a person sends */}
-                                <img src={person.photoURL} alt="avatar" />
-                                <p> {person.text}</p>
-                            </div>
+            <div className="msgs">
+                {messages.map((person, id) => (
+                    <div>
+                        <div
+                            key={id}
+                            className={`msg ${
+                                person.uid === auth.currentUser.uid
+                                    ? 'sent'
+                                    : 'received'
+                            }`}
+                        >
+                            {/* image and paragraph text a person sends */}
+                            <img src={person.photoURL} alt="avatar" />
+                            <p> {person.text}</p>
                         </div>
-                    ))}
-                </div>
-            </React.StrictMode>
+                    </div>
+                ))}
+            </div>
 
             <SendMessage scroll={scroll} />
             <div ref={scroll}></div>
